@@ -28,10 +28,17 @@ describe('RealBeans webshop tests', () => {
   })
 
   it('About pagina toont de historietekst', () => {
-    cy.visit(`${BASE_URL}/pages/about`)
-    bypassPassword()
-    cy.contains('From a small Antwerp grocery').should('exist')
+  cy.visit(`${BASE_URL}/pages/about`)
+  // Wacht expliciet op het wachtwoordscherm of de pagina zelf
+  cy.url().then((url) => {
+    if (url.includes('/password')) {
+      cy.get('input[type="password"]').type(STORE_PASSWORD)
+      cy.get('button[type="submit"]').click()
+      cy.visit(`${BASE_URL}/pages/about`)
+    }
   })
+  cy.contains('From a small Antwerp grocery', { timeout: 10000 }).should('exist')
+})
 
   it('productcatalog toont beide producten', () => {
     cy.visit(`${BASE_URL}/collections/all`)
