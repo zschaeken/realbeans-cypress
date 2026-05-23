@@ -15,5 +15,7 @@ jobs:
         uses: cypress-io/github-action@v6
         with:
           record: true
+          # Chrome gebruiken want Electron crasht op Shopify
+          browser: chrome
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
